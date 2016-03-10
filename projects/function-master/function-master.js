@@ -117,16 +117,39 @@ function addFriend(name, obj) {
 // Should take a name and an object and return true if <name> is a friend of <object> and false otherwise
 
 function isFriend(name, obj) {
+    // if (obj.friends === undefined) return false;
+    // return obj.friends.includes(name);
     if (obj.friends === undefined) return false;
-    return obj.friends.includes(name);
+    return (obj.friends.indexOf(name) > -1)
         
 }
 
 // Should take a name and a list of people, and return a list of all the names that <name> is not friends with
-
-function nonFriends(name, peopleList) {
-    var notfriendlist = [];
+function arrayIncludes(array, element){
+    return (array.indexOf(element) > -1);
+}
+function nonFriends(name, people) {
+    var out = [];
     
+    var person;
+    for (var i = 0; i<people.length; i++) {
+        if (people[i].name === name) person = people[i];
+    }
+    var friends = person.friends;
+    
+    for(var j = 0; j<people.length; j++) {
+        if(people[j] === person) continue;
+        var currentPerson = people[j];
+        if(currentPerson === person) continue;
+        
+        
+        if(!arrayIncludes(friends, currentPerson.name)) {
+            out.push(currentPerson.name);
+        }
+    }
+    
+    
+    return out;
 }
 
 
@@ -139,93 +162,27 @@ function updateObject(obj, key, value) {
     
 }
 
-
 // Should take an object and an array of strings. Should remove any properties on <object> that are listed in <array>
 
 function removeProperties(obj, array) {
-    if (obj.values === undefined) return array;
-    if (array.strings.includes(obj.values)) {
-        delete obj.values;
-        return array;
-    }
+    for (var key in obj)
+    if (array.indexOf(key) > -1) delete obj[key];
     
 }
 
 
-// Should take an array and return an array with all the duplicates removed
+// Should take an array and return an array with all the duplicates removed 
 
 function dedup(array) {
-    for(var i = 0; 1<array.length; i++) {
-        
+    var arr = [];
+    for (var i = 0; i < array.length; i++) {
+    if (arr.indexOf(array[i]) > -1) continue;
+    arr.push(array[i]);
     }
-    
+   
+   
+    return arr;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
