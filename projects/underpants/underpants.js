@@ -229,7 +229,9 @@ _.reject = function reject(array, fn){
 *   }); -> [[2,4],[1,3,5]]
 }
 */
-
+_.partition = function partition(array, func){
+    return [_.filter(array, func), _.reject(array, func)];
+};
 
 /** _.unique()
 * Arguments:
@@ -241,6 +243,18 @@ _.reject = function reject(array, fn){
 *   _.unique([1,2,2,4,5,6,5,2]) -> [1,2,4,5,6]
 */
 
+_.unique = function unique(array) {
+ var arr = [];
+    for (var i = 0; i < array.length; i++) {
+    if (_.indexOf(arr, array[i]) > -1) continue;
+    arr.push(array[i]);
+    }
+   
+   
+    return arr;
+  
+    
+};
 
 /** _.map()
 * Arguments:
@@ -258,6 +272,18 @@ _.reject = function reject(array, fn){
 *   _.map([1,2,3,4], function(e){return e * 2}) -> [2,4,6,8]
 */
 
+_.map = function map(collection, func) {
+    var newArray = [];
+    if(_.typeOf(collection) === 'array'){
+        for (var i = 0; i<collection.length; i++) {
+            newArray.push(func(collection[i], i, collection));
+    }}
+    if(_.typeOf(collection) === 'object'){
+         for (var key in collection) {
+             newArray.push(func(collection[key], key, collection));
+    }}
+    return newArray;
+};
 
 /** _.pluck()
 * Arguments:
@@ -270,6 +296,11 @@ _.reject = function reject(array, fn){
 *   _.pluck([{a: "one"}, {a: "two"}], "a") -> ["one", "two"]
 */
 
+_.pluck = function pluck(array, prop){
+    return _.map(array, function(el){
+        return el[prop];
+    });
+};
 
 /** _.contains()
 * Arguments:
@@ -285,6 +316,11 @@ _.reject = function reject(array, fn){
 * Examples:
 *   _.contains([1,"two", 3.14], "two") -> true
 */
+
+_.contains = function contains(array, value) {
+   return (_.indexOf(array, value) > -1) ? true: false;
+    
+};
 
 
 /** _.every()
@@ -308,6 +344,37 @@ _.reject = function reject(array, fn){
 *   _.every([1,2,3], function(e){return e % 2 === 0}) -> false
 */
 
+_.every = function every(col, func) {
+    var filter;
+    if(_.typeOf(col) === 'array'){
+        if(_.typeOf(func) === 'function'){
+            filter = _.filter(col, func);
+            return (filter.length === col.length);
+        } 
+        else{
+            filter = _.filter(col, function(el, i, arr) {
+                return el;
+            });
+            return (filter.length === col.length);
+        }
+    }
+    if(_.typeOf(col) === 'object'){
+       var theKeys = Object.keys(col);
+       if(_.typeOf(func) === 'function'){
+           filter = _.filter(theKeys, function(el, i, arr) {
+               return func(col[el], el, col);
+           }); 
+           return (theKeys.length === filter.length);
+       }
+       else{
+           filter = _.filter(theKeys, function(el, i, arr) {
+               return col[el];
+           });
+       }
+    }
+    
+};
+
 
 /** _.some()
 * Arguments:
@@ -329,6 +396,39 @@ _.reject = function reject(array, fn){
 *   _.some([1,3,5], function(e){return e % 2 === 0}) -> false
 *   _.some([1,2,3], function(e){return e % 2 === 0}) -> true
 */
+_.some = function some(col, func) {
+
+    var filter;
+    if(_.typeOf(col) === 'array'){
+        if(_.typeOf(func) === 'function'){
+            filter = _.filter(col, func);
+            return (filter.length > 0);
+        } 
+        else{
+            filter = _.filter(col, function(el, i, arr) {
+                return el;
+            });
+            return (filter.length === col.length);
+        }
+    }
+    if(_.typeOf(col) === 'object'){
+       var theKeys = Object.keys(col);
+       if(_.typeOf(func) === 'function'){
+           filter = _.filter(theKeys, function(el, i, arr) {
+               return func(col[el], el, col);
+           }); 
+           return (filter.length > 0);
+       }
+       else{
+           filter = _.filter(theKeys, function(el, i, arr) {
+               return col[el];
+           });
+       }
+    }
+    
+};
+
+    
 
 
 /** _.reduce()
@@ -351,6 +451,20 @@ _.reject = function reject(array, fn){
 */
 
 
+
+_.reduce = function reduce(array, func, seed){
+  var seedUndefined = arguments.length < 3;
+  _.each(array, function(previous, element, index){
+    if(seedUndefined) {
+      seedUndefined = false;
+      seed = previous;
+    } else seed = func(seed, previous, element, index);
+  });
+  return seed;
+};
+
+ 
+
 /** _.extend()
 * Arguments:
 *   1) An Object
@@ -365,7 +479,14 @@ _.reject = function reject(array, fn){
 *   _.extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
 *   _.extend(data, {a:"two"}); -> data now equals {a:"two"}
 */
-
+_.extend = function extend(obj1, obj2){
+    for(var i = 1; i < arguments.length; i++){
+        for(var key in arguments[i]){
+            obj1[key] = arguments [i][key];
+        }
+    }
+    return obj1;
+};
 
 // This is the proper way to end a javascript library
 }());
