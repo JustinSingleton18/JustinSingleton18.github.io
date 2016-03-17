@@ -437,12 +437,12 @@ _.some = function some(col, func) {
 *   2) A function
 *   3) A seed
 * Objectives:
-*   1) Call <function> for every element in <collection> passing the arguments:
+*   1) Call <function> for every element in <array> passing the arguments:
 *         previous result, element, index
 *   2) Use the return value of <function> as the "previous result"
 *      for the next iteration
 *   3) On the very first iteration, use <seed> as the "previous result"
-*   4) If no <seed> was given, use the first element/value of <collection> as <seed>
+*   4) If no <seed> was given, use the first element/value of <array> as <seed>
 *   5) After the last iteration, return the return value of the final <function> call
 * Gotchas:
 *   1) What if <seed> is not given?
@@ -450,19 +450,29 @@ _.some = function some(col, func) {
 *   _.reduce([1,2,3], function(prev, curr){ return prev + curr}) -> 6
 */
 
-
-
 _.reduce = function reduce(array, func, seed){
-  var seedUndefined = arguments.length < 3;
-  _.each(array, function(previous, element, index){
-    if(seedUndefined) {
-      seedUndefined = false;
-      seed = previous;
-    } else seed = func(seed, previous, element, index);
-  });
+  
+  for (var i = 0; i <array.length; i++) {
+     if (_.typeOf(seed) === 'undefined') {
+         seed = array[0];
+         continue;
+    } 
+    seed = func(seed, array[i], i);
+  }
   return seed;
+    
 };
 
+// _.reduce = function reduce(array, func, seed){
+//   var seedUndefined = (arguments.length < 3);
+//   _.each(array, function(previous, element, index){
+//     if(seedUndefined) {
+//       seedUndefined = false;
+//       seed = previous;
+//     } else seed = func(seed, previous, element, index);
+//   });
+//   return seed;
+// };
  
 
 /** _.extend()
@@ -479,6 +489,7 @@ _.reduce = function reduce(array, func, seed){
 *   _.extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
 *   _.extend(data, {a:"two"}); -> data now equals {a:"two"}
 */
+
 _.extend = function extend(obj1, obj2){
     for(var i = 1; i < arguments.length; i++){
         for(var key in arguments[i]){
