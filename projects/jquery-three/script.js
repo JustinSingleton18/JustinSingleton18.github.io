@@ -85,7 +85,7 @@ console.log(allButGroot);
 function createHeroesList (heros) {
   // create an unordered list(<ul>) of heroes from the provided array.
   var $ul = $('<ul>').attr('id', 'heros');
-  
+    
   // give each <li> in the <ul> the heros's name and notes
   var $lis = _.map(heros, function(h) {
     var $li = $('<li>');
@@ -97,7 +97,7 @@ function createHeroesList (heros) {
   $ul.append($lis);
   // append the <ul> to the DOM
   $('body').append($ul);
-};
+}
 createHeroesList(allGuardians);  
   
   
