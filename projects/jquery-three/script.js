@@ -59,47 +59,55 @@ $(function () {
   
   // ALL YOUR CODE BELOW HERE //
   
+  // Merge the arrays of objects into one array of objects.
+  var allGuardians = _.flatten([oldGuardians, newGuardians]);
+  console.log(allGuardians);
   
-  
-// Merge the arrays of objects into one array of objects.
-var allGuardians = _.flatten([oldGuardians, newGuardians]);
-console.log(allGuardians);
-
-// Use map to make an array of all of the names of your heros.
-var heroNames =_.map(allGuardians, function(g) {
-  return g.name;
-});
-console.log(heroNames);
-// Now how about modifying your last step to pull out just first names!
-var heroFirstNames = _.map(heroNames, function(n) {
-  return n.split(' ')[0];
-});
-console.log(heroFirstNames);
-// Filter out `Groot`.
-var allButGroot = _.filter(heroFirstNames, function(n) {
-  return n !== 'Groot';
-});  
-console.log(allButGroot);
-
-// Use your new found knowledge of making tables with jQuery to create a list.
-function createHeroesList (heros) {
-  // create an unordered list(<ul>) of heroes from the provided array.
-  var $ul = $('<ul>').attr('id', 'heros');
-    
-  // give each <li> in the <ul> the heros's name and notes
-  var $lis = _.map(heros, function(h) {
-    var $li = $('<li>');
-    var $namePar = $('<p>').text("Name:" + h.name);
-    var $notesPar = $('<p>').text("Notes:" + h.notes);
-    $li.append([$namePar, $notesPar]);
-    return $li;
+  // Use map to make an array of all of the names of your heros.
+  var heroNames = _.map(allGuardians, function(g){
+    return g.name;
   });
-  $ul.append($lis);
-  // append the <ul> to the DOM
-  $('body').append($ul);
-}
-createHeroesList(allGuardians);  
+  console.log(heroNames);
   
+  // Now how about modifying your last step to pull out just first names!
+  
+  var heroFirstNames = _.map(heroNames, function(n) {
+    return n.split(' ')[0];      
+  });
+  console.log(heroFirstNames);
+  
+  
+  // Filter out `Groot`.
+  
+  var allButGroot = _.filter(heroFirstNames, function (n){
+    return n !== 'Groot';
+  });
+  console.log(allButGroot);
+  
+  
+  
+  // Use your new found knowledge of making tables with jQuery to create a table showing the heros and their notes
+  //creating a list instead
+  function createHeroesList (heroes) {
+    //create an unordered list of heroes from the provided array
+    var $ul = $('<ul>').attr('id', 'heroes');
+    //give each <li> in the <ul> the hero's name and notes
+    var $lis = _.map(heroes, function(h) {
+      var $li = $('<li>');
+      
+      var $namePar = $('<p>').text('Name: ' + h.name);
+      var $notesPar = $('<p>').text('Notes: ' + h.notes);
+      
+      $li.append([$namePar, $notesPar]);
+      return $li;
+    });
+    //append <li>s to the <ul>
+    $ul.append($lis);
+    
+    //append the <ul> to the DOM
+    $('body').append($ul);
+  }
+  createHeroesList(allGuardians);
   
   // ALL YOUR CODE ABOVE HERE //
 });
